@@ -1,0 +1,39 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+
+# Assuming df_filtered_is_book is your DataFrame
+
+# Features (X) and Target (y)
+features = ['site_name', 'posa_continent', 'user_location_country', 'user_location_region',
+            'user_location_city', 'orig_destination_distance', 'user_id', 'is_mobile',
+            'is_package', 'channel', 'srch_adults_cnt', 'srch_children_cnt', 'srch_rm_cnt',
+            'srch_destination_id', 'srch_destination_type_id', 'is_booking', 'cnt',
+            'hotel_continent', 'hotel_country', 'hotel_market', 'difference_in_days', 'month']
+target = 'hotel_cluster'
+
+X = df_filtered_is_book[features]
+y = df_filtered_is_book[target]
+
+# Split the data into training and testing sets (80% training, 20% testing)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Initialize the logistic regression model
+model = LogisticRegression()
+
+# Fit the model on the training data
+model.fit(X_train, y_train)
+
+# Predictions on the testing data
+y_pred = model.predict(X_test)
+
+# Evaluate the model
+accuracy = accuracy_score(y_test, y_pred)
+conf_matrix = confusion_matrix(y_test, y_pred)
+classification_rep = classification_report(y_test, y_pred)
+
+# Display the results
+print("Accuracy:", accuracy)
+print("\nConfusion Matrix:\n", conf_matrix)
+print("\nClassification Report:\n", classification_rep)
